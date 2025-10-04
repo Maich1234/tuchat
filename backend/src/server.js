@@ -1,6 +1,10 @@
 import express from 'express'
 import AuthRoutes from "./routes/auth.route.js"
 import path from "path"
+
+dotenv.config();
+
+
 const app = express();
 const PORT = process.env.PORT || 4000;
 import dotenv from "dotenv"
@@ -9,7 +13,6 @@ const __dirname = path.resolve();
 
 const api = "/api/v1"
 
-dotenv.config();
 
 //make ready for deployment
 if (process.env.NODE_ENV === "production") {
