@@ -16,8 +16,8 @@ export default async function Signup(req, res){
         });
 
         if(NewUser){
-            generateToken(NewUser._id, res);
             await NewUser.save()
+            generateToken(NewUser._id, res);
             return res.status(201).json({
                 _id:NewUser._id, fullName, email, profilePic: NewUser.profilePic
             })
