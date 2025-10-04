@@ -1,11 +1,23 @@
 import express from 'express'
 import AuthRoutes from "./routes/auth.route.js"
+import path from "path"
 const app = express();
 const PORT = process.env.PORT || 4000;
+
+const __dirname = path.resolve();
+
 const api = "/api/v1"
-app.get("/",(req, res)=>{
-    res.send("Hello world")
-})
+
+
+//make ready for deployment
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get(/^\/(?!api\/v1\/auth).*/, (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
+
 
 app.use(`${api}/auth`, AuthRoutes);
 app.listen(PORT, ()=>{
