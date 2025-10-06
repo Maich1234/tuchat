@@ -3,10 +3,13 @@ import AuthRoutes from "./routes/auth.route.js"
 import path from "path"
 import dotenv from "dotenv"
 import { ConnectDB } from './lib/db.js';
+import cookieParser from "cookie-parser"
 
 dotenv.config();
 const app = express();
 app.use(express.json())
+app.use(cookieParser())
+
 const PORT = process.env.PORT || 4000;
 
 const __dirname = path.resolve();
