@@ -6,8 +6,10 @@ import validateLogin from "../middlewares/login.mid.js"
 import Logout from "../controllers/auth/logout.js";
 import {protectRoute} from "../middlewares/auth.mid.js";
 import updateProfile from "../controllers/auth/updateprofile.js"
+import arcjetProtection from "../middlewares/arcjet.mid.js";
 
 const router = Router();
+router.use(arcjetProtection);
 router.post("/signup", validateReg,Signup);
 router.post("/login", validateLogin, Login);
 router.post("/logout", Logout);
