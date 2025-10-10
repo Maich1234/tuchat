@@ -1,6 +1,8 @@
 import HassPassword from "../../lib/hashpassword.js";
 import { generateToken } from "../../lib/utils.js";
-import User from "../../models/user.model.js"
+import User from "../../models/user.model.js";
+import sendMail from "../../lib/email/sendmail.js"
+
 export default async function Signup(req, res){
     const {fullName, email, password} = req.body;
     
@@ -18,6 +20,11 @@ export default async function Signup(req, res){
         if(NewUser){
             await NewUser.save()
             generateToken(NewUser._id, res);
+             try{
+            await sendMail(NewUser.email, NewUser.fullName)
+        }catch(err){
+            console.log("Error sending mail from signup controler");
+        }
             return res.status(201).json({
                 _id:NewUser._id, fullName, email, profilePic: NewUser.profilePic
             })
@@ -25,6 +32,7 @@ export default async function Signup(req, res){
             res.status(400).json({message:"An error occurred. Check your inputs"})
         }
         //todo: send a welcome email to the user
+       
     }catch(err){
         console.log("Error in signup controller", err);
         res.status(500).json({message:"Internal server error"})
